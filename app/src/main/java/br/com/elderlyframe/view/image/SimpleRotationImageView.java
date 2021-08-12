@@ -2,13 +2,13 @@ package br.com.elderlyframe.view.image;
 
 import android.content.Context;
 import android.graphics.Rect;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 
 import static android.view.MotionEvent.ACTION_CANCEL;
 
-public class SimpleRotationImageView extends android.support.v7.widget.AppCompatImageView {
+public class SimpleRotationImageView extends androidx.appcompat.widget.AppCompatImageView {
 
     private float angle;
     private float lastAngle;

@@ -1,13 +1,11 @@
 package br.com.elderlyframe.view.zoom.touch;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 public class TouchZoomLinearLayout extends LinearLayout implements ScaleGestureDetector.OnScaleGestureListener {
@@ -69,8 +67,8 @@ public class TouchZoomLinearLayout extends LinearLayout implements ScaleGestureD
                 isZoom = true;
                 getParent().requestDisallowInterceptTouchEvent(true);
 
-                setScaleX(2l);
-                setScaleY(2l);
+                setScaleX(2L);
+                setScaleY(2L);
 
                 setPivotY(e.getY());
                 setPivotX(e.getX());
@@ -89,7 +87,7 @@ public class TouchZoomLinearLayout extends LinearLayout implements ScaleGestureD
     }
 
     private boolean isDoubleClick() {
-        return this.amountTouch == 2;
+        return amountTouch == 2;
     }
 
 

@@ -5,9 +5,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.TypedArray;
-import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
+import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Button;
@@ -77,7 +77,7 @@ public class SpeechText extends LinearLayout {
                 }
 
                 if(ContextCompat.checkSelfPermission(getContext(), Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED){
-                    stt.backgroundVoiceListener.run();
+                    stt.backgroundVoiceListener.start();
                 }
             }
         });
