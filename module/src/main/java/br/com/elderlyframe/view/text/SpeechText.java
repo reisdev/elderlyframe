@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
@@ -89,7 +90,8 @@ public class SpeechText extends LinearLayout {
     private void createButton(Context context) {
         button = new ImageButton(context);
         button.setLayoutParams(new LayoutParams(0, LayoutParams.MATCH_PARENT, ICON_WEIGHT));
-        button.setBackgroundResource(iconResource);
+        button.setImageResource(iconResource);
+        button.setBackgroundResource(0);
         button.setScaleType(ImageView.ScaleType.FIT_CENTER);
     }
 
