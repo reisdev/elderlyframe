@@ -9,9 +9,12 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import br.com.elderlyframe.R;
@@ -28,8 +31,7 @@ public class SpeechText extends LinearLayout {
     private Integer ems;
 
     private EditText editText;
-    private Button button;
-
+    private ImageButton button;
 
     public SpeechText(Context context) {
         super(context);
@@ -68,11 +70,9 @@ public class SpeechText extends LinearLayout {
 
                     if (ActivityCompat.shouldShowRequestPermissionRationale((Activity) getContext(),
                             Manifest.permission.RECORD_AUDIO)) {
-
                         ActivityCompat.requestPermissions((Activity) getContext(),
                                 new String[]{Manifest.permission.RECORD_AUDIO},
                                 0);
-
                     }
                 }
 
@@ -87,9 +87,10 @@ public class SpeechText extends LinearLayout {
     }
 
     private void createButton(Context context) {
-        button = new Button(context);
+        button = new ImageButton(context);
         button.setLayoutParams(new LayoutParams(0, LayoutParams.MATCH_PARENT, ICON_WEIGHT));
         button.setBackgroundResource(iconResource);
+        button.setScaleType(ImageView.ScaleType.FIT_CENTER);
     }
 
     private void createEditText(Context context) {
@@ -115,8 +116,7 @@ public class SpeechText extends LinearLayout {
         return editText;
     }
 
-    public Button getButton() {
+    public ImageButton getButton() {
         return button;
     }
-
 }

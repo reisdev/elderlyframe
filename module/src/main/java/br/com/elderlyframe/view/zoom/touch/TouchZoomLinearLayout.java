@@ -45,7 +45,6 @@ public class TouchZoomLinearLayout extends LinearLayout implements ScaleGestureD
 
     public boolean onTouchEvent(MotionEvent e) {
 
-
         if (MotionEvent.ACTION_DOWN == e.getAction()) {
             if (!isZoom ) {
                 amountTouch++;

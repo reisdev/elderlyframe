@@ -3,9 +3,11 @@ package br.com.elderlyframe.view.text;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.EditText;
 
@@ -14,7 +16,8 @@ import java.util.Locale;
 
 class SpeechToText implements RecognitionListener {
 
-    private SpeechRecognizer speech = null;
+    private SpeechRecognizer speech;
+    private Handler handler;
     private Intent recognizerIntent;
     private EditText editText;
     private String text = "";
@@ -32,6 +35,7 @@ class SpeechToText implements RecognitionListener {
 
     public SpeechToText(Context context, EditText editText) {
         this.editText = editText;
+        handler = new Handler(context.getMainLooper());
         backgroundVoiceListener = new BackgroundVoiceListener();
         speech = SpeechRecognizer.createSpeechRecognizer(context);
         speech.setRecognitionListener(this);
@@ -41,11 +45,11 @@ class SpeechToText implements RecognitionListener {
                 RecognizerIntent.LANGUAGE_MODEL_WEB_SEARCH);
         recognizerIntent.putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS, true);
         recognizerIntent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_MINIMUM_LENGTH_MILLIS, MINIMUM_LENGTH_FOR_EXTRA_SPEECH_IN_MILLIS);
-
     }
 
     @Override
     public void onReadyForSpeech(Bundle bundle) {
+        Log.d("Speech","Ready to listen");
         setListening(false);
     }
 
@@ -72,7 +76,15 @@ class SpeechToText implements RecognitionListener {
     }
 
     @Override
-    public void onResults(Bundle bundle) {
+    public void onResults(Bundle results) {
+        ArrayList<String> matches = results
+                .getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
+
+        if (matches != null) {
+            text = TextUtils.join(" ",matches);
+            editText.setText(text);
+        }
+        setListening(false);
     }
 
     @Override
@@ -80,11 +92,8 @@ class SpeechToText implements RecognitionListener {
         ArrayList<String> matches = partialResults
                 .getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
 
-        this.text = "";
         if (matches != null) {
-            for (String result : matches) {
-                text += result + " ";
-            }
+            text = TextUtils.join(" ",matches);
             editText.setText(text);
         }
         setListening(false);
@@ -94,14 +103,34 @@ class SpeechToText implements RecognitionListener {
     public void onEvent(int i, Bundle bundle) {
     }
 
+    private Runnable startListening = new Runnable() {
+        @Override
+        public void run() {
+            Log.i("Text","Started Listening");
+            setListening(true);
+            speech.startListening(recognizerIntent);
+        }
+    };
+
+    private Runnable stopListening = new Runnable() {
+        @Override
+        public void run() {
+            Log.i("Text","Stopped Listening");
+            setListening(false);
+            speech.stopListening();
+        }
+    };
+
     public class BackgroundVoiceListener extends Thread {
         public void run() {
             try {
-                this.sleep(10);
+                sleep(10);
                 Log.i("Text", "islistening: " + isListening());
                 if (!isListening()) {
-                    setListening(true);
-                    speech.startListening(recognizerIntent);
+                    // To run on main thread
+                    handler.post(startListening);
+                } else {
+                    handler.post(stopListening);
                 }
             } catch (InterruptedException e) {
                 e.printStackTrace();
